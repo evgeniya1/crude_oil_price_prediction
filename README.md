@@ -16,7 +16,7 @@ I will work with the dataset that I downloaded from https://datahub.io/ for dail
 
 ![](https://github.com/evgeniya1/Flatiron_final_project/blob/master/figs/original_data.png)
 
-For regression problem the original price in USD is log-transformed and leveled/detrended, so that it lies within (-1,1) region, to avoid scaling issues for growing over time and large differences in magnitude.
+For regression problem the original price in USD is log-transformed and leveled/detrended, so that it lies within (-1,1) interval, to avoid scaling issues for growing over time and large differences in magnitude. After that the data is smoothed (using savgol_filter from scipy.signal package) to filted noise which leads to better prediction results. For instance, in case of ARIMA model discussed below mean absolute percentage error drops from 5.5 % (for raw data) to 4.4 % (smoothed data).
 
 ## Forecast one month ahead using two years of data
 
@@ -24,7 +24,7 @@ For regression problem the original price in USD is log-transformed and leveled/
 
 First, I use recently developed by Facebook *prophet* package for time series modeling. It has three major components: non-periodic trend component (modeled as piecewise linear), periodic seasonal component (using Fourier series), user-provided  holiday component.
 
-I performed slide-forward cross-validation (CV) using 2 years of data to train the prophet model (with trend, yearly and monthly seasonality components included). The animation below shows 100 CV intervals, where each interval is trained separately and error is computed on 1 month (22 business days) of test unseen by the model data. The mean average percentage error (MAPE) for the test data is 33.75 % ![equation](https://latex.codecogs.com/gif.latex?$\pm$) 28.77 % for the transformed price and for 68 % confidence interval. While for transformed back to USD units price MAPE is noticeable lower and it is 12.26 % ![equation](https://latex.codecogs.com/gif.latex?$\pm$) 9.03 %.
+I performed slide-forward cross-validation (CV) using 2 years of data to train the prophet model (with trend, yearly and monthly seasonality components included). The animation below shows 100 CV intervals, where each interval is trained separately and error is computed on 1 month (22 business days) of test unseen by the model data. The mean absolute percentage error (MAPE) for the test data is 33.75 % ![equation](https://latex.codecogs.com/gif.latex?$\pm$) 28.77 % for the transformed price and for 68 % confidence interval. While for the transformed back to USD units price MAPE is noticeable lower and it is 12.26 % ![equation](https://latex.codecogs.com/gif.latex?$\pm$) 9.03 %.
 
 ![](https://github.com/evgeniya1/Flatiron_final_project/blob/master/CV_fbprophet/y_smooth_w8_train_506_test_22_cv_100/FBprop_smooth_cv100_train_506_test_22.gif)
 
@@ -34,9 +34,9 @@ Comparison between actual price (black line) and prediction (red line) for 22 da
 
 ### ARIMA
 
-Next, I use Auto Regressive Integrated Moving Average (ARIMA) model from statsmodels package. Integrated part od the model is responsible for transforming time series into data with stationary characteristic by differencing (*d* times) the original time series. Next, the prediction of transformed data is approximated by *p* number of preceding periods/data points (auto regressive part) and *q* number of preceding error terms (moving average part). It has no seasonal component.
+Next, I use Auto Regressive Integrated Moving Average (ARIMA) model from statsmodels package. Integrated part of the model is responsible for transforming time series into data with stationary characteristics by differencing (*d* times) the original time series. Next, the prediction of transformed data is approximated linear combination of *p* number of preceding periods/data points (auto regressive part) and *q* number of preceding error terms (moving average part). It has no seasonal component.
 
-Similarly, I performed slide-forward CV using 2 years of data to train the ARIMA model (using found optimal parameters *p*=4, *d*=1, *q*=1). The animation below shows 100 CV intervals, where each interval is trained separately and error is computed on 22 days of test unseen by the model data. MAPE for the test data is 12.51 % ![equation](https://latex.codecogs.com/gif.latex?$\pm$) 16.80 % for the transformed price (68 % confidence interval as well). While for transformed back to USD units price MAPE is 4.44 % ![equation](https://latex.codecogs.com/gif.latex?$\pm$) 2.93 %. 
+Similarly, I performed slide-forward CV using 2 years of data to train the ARIMA model (using found optimal parameters *p*=4, *d*=1, *q*=1). The animation below shows 100 CV intervals, where each interval is trained separately and error is computed on 22 days of test unseen by the model data. MAPE for the test data is 12.51 % ![equation](https://latex.codecogs.com/gif.latex?$\pm$) 16.80 % for the transformed price (68 % confidence interval as well). While for the transformed back to USD units price MAPE is 4.44 % ![equation](https://latex.codecogs.com/gif.latex?$\pm$) 2.93 %. 
 
 ![](https://github.com/evgeniya1/Flatiron_final_project/blob/master/CV_fbprophet/y_smooth_w8_train_506_test_22_cv_100/FBprop_smooth_cv100_train_506_test_22.gif)
 
