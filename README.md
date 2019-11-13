@@ -10,7 +10,7 @@ Here I will perform time series analysis using different available models, inclu
 
 ## Dataset
 
-In spite of the fact that oil market is global, there are different types of crude oil defined by the region it is extracted. Three primary benchmark oils are West Texas Intermediate (WTI), Brent Blend, and Dubai Crude. They have slightly different chemical composition that affects quality, ease of refinement, and hence, price. Here I will focus on WTI crude oil price, which is a high-quality oil that is easily and cheaper to refine. 
+In spite of the fact that oil market is global, there are different types of crude oil defined by the region it is extracted. Three primary benchmark oils are West Texas Intermediate (WTI), Brent Blend, and Dubai Crude. They have slightly different chemical compositions that affects quality, ease of refinement, and hence, price. Here I will focus on WTI crude oil price, which is a high-quality oil that is easier and cheaper to refine. 
 
 I will work with the dataset that I downloaded from https://datahub.io/ for daily and weekly frequency. For daily frequency this dataset contains 8501 data points for daily frequence and 1762 points for weekly frequency for time period from 01/02/1986 until 09/23/2019. The plot showing WTI crude oil price over specified period of time is given below.
 
