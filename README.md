@@ -28,7 +28,7 @@ I performed slide-forward cross-validation (CV) using 2 years of data to train t
 
 ![](https://github.com/evgeniya1/Flatiron_final_project/blob/master/CV_fbprophet/y_smooth_w8_train_506_test_22_cv_100/FBprop_smooth_cv100_train_506_test_22.gif)
 
-Comparison between actual price (black line) and prediction (red line) for 22 days ahead using 2 years of past data to train the model is shown below.
+Comparison between actual price (black line) and predicted (red line) for 22 days ahead using 2 years of past data to train the model is shown below.
 
 ![](https://github.com/evgeniya1/Flatiron_final_project/blob/master/CV_fbprophet/y_smooth_w8_train_506_test_22_cv_100/compare.png)
 
@@ -40,8 +40,22 @@ Similarly, I performed slide-forward CV using 2 years of data to train the ARIMA
 
 ![](https://github.com/evgeniya1/Flatiron_final_project/blob/master/CV_fbprophet/y_smooth_w8_train_506_test_22_cv_100/FBprop_smooth_cv100_train_506_test_22.gif)
 
-Comparison between actual price (black line) and prediction (red line) for 22 days ahead using 2 years of past data to train the model is shown below.
+Comparison between actual price (black line) and predicted (red line) for 22 days ahead using 2 years of past data to train the model is shown below.
 
 ![](https://github.com/evgeniya1/Flatiron_final_project/blob/master/CV_arima/y_smooth_w8_train_506_test_22_cv_100/compare.png)
 
-Comparing *prophet* and ARIMA results, ARIMA gives noticeable better predictions with MAPE roughly three times lower that *prophet*. 
+Comparing *prophet* and ARIMA results, ARIMA gives noticeably better predictions with MAPE roughly three times lower that *prophet*. 
+
+Moving to the simpler problem: predicting 5 days ahead (i.e. 1 week ahead instead of 1 month), plot below shows comparison between the actual price (black line) and predicted (red line) for 100 CV intervals.
+
+![](https://github.com/evgeniya1/Flatiron_final_project/blob/master/CV_arima/y_smooth_w8_train_506_test_5_cv_100/compare.png)
+
+### LSTM
+
+Long short-term memory (LSTM) is a special type of artificial recurrent neural network (RNN). In simple workds, RNN is a network with loop: it can be represented by multiple copies of the same network (e.g. applied to sliced chunks of a given time series) where information is passed from each one NN to the next one in a sequence. In case of LSTM NN, the passed information goes through compicated system of filters. See this post for detailed description: https://colah.github.io/posts/2015-08-Understanding-LSTMs/.  
+
+Here I will focus on the simpler problem to predict 5 days ahead. I explore two different approaches, shown schematically below: 
+- 1 LSTM model to predict all 5 days ahead
+- 5 different LSTM models to predict one day ahead for each day out of 5
+
+
