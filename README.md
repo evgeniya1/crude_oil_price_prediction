@@ -4,7 +4,7 @@
 
 Crude oil is one of the most important and most traded commodity worldwide which makes crude oil price being considered as an indicator of global economy. Therefore, predicting the price in the future or at least getting an estimate becomes an important problem.
 
-Forecasting the crude oil price is an extremely dificult task. Good discussion about factors influencing the price can be found here https://www.investopedia.com/articles/economics/08/determining-oil-prices.asp. An interesting fact from this article is that the majority of trades are done by speculators. Moving to data modeling, whether past price movements can be used to forecast the price or not is a subject of a debate. Here I consider solely the previous price movements to make predictions for future behavior.
+Forecasting the crude oil price is an extremely difficult task. Good discussion about factors influencing the price can be found here https://www.investopedia.com/articles/economics/08/determining-oil-prices.asp. An interesting fact from this article is that the majority of trades are done by speculators. Moving to data modeling, whether past price movements can be used to forecast the price or not is a subject of a debate. Here I consider solely the previous price movements to make predictions for future behavior.
 
 Here I will perform time series analysis using different available models, including facebook prophet, ARIMA, LSTM NN, aimed to forecast future prices. Last part of the project is devoted to simpler classification problem to identify the one week ahead trend, i.e. strong uptrend, not strong uptrend or downtrend (further refered as sideways) or strong downtrend.
 
