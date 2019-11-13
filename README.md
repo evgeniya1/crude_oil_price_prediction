@@ -4,9 +4,9 @@
 
 Crude oil is one of the most important and most traded commodity worldwide which makes crude oil price being considered as an indicator of global economy. Therefore, predicting the price in the future or at least getting an estimate becomes an important problem.
 
-Forecasting the crude oil price is an extremely dificult task. Whether past price movements can be used to forecast the price or not is a subject of a debate. Here I will perform time series analysis using different available models, including facebook prophet, ARIMA, LSTM NN, aimed to forecast future priced based solely on previous price movements.
+Forecasting the crude oil price is an extremely dificult task. Good discussion about factors influencing the price can be found here https://www.investopedia.com/articles/economics/08/determining-oil-prices.asp. An interesting fact from this article is that the majority of trades are done by speculators. Moving to data modeling, whether past price movements can be used to forecast the price or not is a subject of a debate. Here I consider solely the previous price movements to make predictions for future behavior.
 
-Last part of the project is devoted to simpler classification problem to identify the one week ahead trend, i.e. strong uptrend, not strong uptrend or downtrend (further refered as sideways), and strong downtrend.
+Here I will perform time series analysis using different available models, including facebook prophet, ARIMA, LSTM NN, aimed to forecast future prices. Last part of the project is devoted to simpler classification problem to identify the one week ahead trend, i.e. strong uptrend, not strong uptrend or downtrend (further refered as sideways) or strong downtrend.
 
 ## Dataset
 
@@ -18,7 +18,7 @@ I will work with the dataset that I downloaded from https://datahub.io/ for dail
 
 For regression problem the original price in USD is log-transformed and leveled/detrended, so that it lies within (-1,1) interval, to avoid scaling issues for growing over time and large differences in magnitude. After that the data is smoothed (using savgol_filter from scipy.signal package) to filted noise which leads to better prediction results. For instance, in case of ARIMA model discussed below mean absolute percentage error drops from 5.5 % (for raw data) to 4.4 % (smoothed data).
 
-## Forecast one month ahead using two years of data
+## Regression problem: forecast one month ahead using two years of data
 
 ### Facebook Prophet
 
@@ -46,7 +46,11 @@ Comparison between actual price (black line) and predicted (red line) for 22 day
 
 Comparing *prophet* and ARIMA results, ARIMA gives noticeably better predictions with MAPE roughly three times lower that *prophet*. 
 
-Moving to the simpler problem: predicting 5 days ahead (i.e. 1 week ahead instead of 1 month), plot below shows comparison between the actual price (black line) and predicted (red line) for 100 CV intervals.
+## Regression problem: forecast one week ahead
+
+### ARIMA
+
+Moving to the simpler problem: predicting 5 days ahead (i.e. 1 week ahead instead of 1 month), plot below shows comparison between the actual price (black line) and predicted by ARIMA model (red line) for 100 CV intervals.
 
 ![](https://github.com/evgeniya1/Flatiron_final_project/blob/master/CV_arima/y_smooth_w8_train_506_test_5_cv_100/compare.png)
 
@@ -56,6 +60,24 @@ Long short-term memory (LSTM) is a special type of artificial recurrent neural n
 
 Here I will focus on the simpler problem to predict 5 days ahead. I explore two different approaches, shown schematically below: 
 - 1 LSTM model to predict all 5 days ahead
-- 5 different LSTM models to predict one day ahead for each day out of 5
+- 5 different LSTM models to predict one day ahead for each day out of 5 (model stacking)
 
+<img src="https://github.com/evgeniya1/Flatiron_final_project/blob/master/figs/LSTM_models.png" width="337" height="284">
 
+#### Hyperparameter Tuning
+- input window size: optimal values are input = 25 days for 1 LSTM, input = [29,20,17,18,14] days for 5 LSTM models. Not that in case of 5 LSTM models input size decreases with the gap between last input point and target point/day, i.e. less short term information is needed, which is an interesting finding.
+- hidden layer size: optimal values is 2
+
+Comparison between actual price (black dots) and predicted (red lines) for 5 days ahead using optimal input window size to train the models is shown below for both 1 LSTM and 5 LSTM models for 50 intervals. 1 LSTM model has MAPE = 1.98 ![equation](https://latex.codecogs.com/gif.latex?$\pm$) 1.95 while 5 LSTM models has slightly better result MAPE = 1.91 ![equation](https://latex.codecogs.com/gif.latex?$\pm$) 1.91 for the test data (here train-test split is 80%-20%).
+
+![](https://github.com/evgeniya1/Flatiron_final_project/blob/master/figs/regression_5vs1.png)
+From the figure above, it can be noticed that 1 LSTM model gives flatter predictions than 5 LSMT which camptures better the variarion in predicted price for 5 days. To demonstrate this, graphs below show the distribution of average slope (within predicted 5 days) for both models. 1 LSTM model clearly captures the variation in slope better.
+
+![](https://github.com/evgeniya1/Flatiron_final_project/blob/master/figs/regression_slope_hist_1LSTM.png)
+![](https://github.com/evgeniya1/Flatiron_final_project/blob/master/figs/regression_slope_hist.png)
+
+These LSTM models give reasonable predictions, accounting the noisiness and randomness of a given problem. However, how to achieve more reliable results? To do so, let me consider even simplier classification problem aimed to predict strong uptrend, sideways, or strong downtrend.
+
+## Classification problem: forecast trend one week ahead
+
+Here to predict price one week ahead I use dataset with dataset weekly frequency, i.e. predict only one point ahead. To move to classification problem first the target needs to be engineered.
