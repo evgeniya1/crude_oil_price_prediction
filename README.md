@@ -68,7 +68,7 @@ Here I will focus on the simpler problem to predict 5 days ahead. I explore two 
 - input window size: optimal values are input = 25 days for 1 LSTM, input = [29,20,17,18,14] days for 5 LSTM models. Not that in case of 5 LSTM models input size decreases with the gap between last input point and target point/day, i.e. less short term information is needed, which is an interesting finding.
 - hidden layer size: optimal values is 2
 
-Comparison between actual price (black dots) and predicted (red lines) for 5 days ahead using optimal input window size to train the models is shown below for both 1 LSTM and 5 LSTM models for 50 intervals. 1 LSTM model has MAPE = 1.98 ![equation](https://latex.codecogs.com/gif.latex?$\pm$) 1.95 while 5 LSTM models has slightly better result MAPE = 1.91 ![equation](https://latex.codecogs.com/gif.latex?$\pm$) 1.91 for the test data (here train-test split is 80%-20%).
+Comparison between actual price (black dots) and predicted (red lines) for 5 days ahead using optimal input window size to train the models is shown below for both 1 LSTM and 5 LSTM models for 50 intervals. 1 LSTM model has MAPE = 1.98 ![equation](https://latex.codecogs.com/gif.latex?$\pm$) 1.95 while 5 LSTM models has slightly better result MAPE = 1.91 ![equation](https://latex.codecogs.com/gif.latex?$\pm$) 1.91 for the test data (here train-test split is 80%-20%). As expected 5 LSTM models give better results.
 
 ![](https://github.com/evgeniya1/Flatiron_final_project/blob/master/figs/regression_5vs1.png)
 From the figure above, it can be noticed that 1 LSTM model gives flatter predictions than 5 LSMT which camptures better the variarion in predicted price for 5 days. To demonstrate this, graphs below show the distribution of average slope (within predicted 5 days) for both models. 1 LSTM model clearly captures the variation in slope better.
@@ -80,4 +80,51 @@ These LSTM models give reasonable predictions, accounting the noisiness and rand
 
 ## Classification problem: forecast trend one week ahead
 
-Here to predict price one week ahead I use dataset with dataset weekly frequency, i.e. predict only one point ahead. To move to classification problem first the target needs to be engineered.
+Here to predict price one week ahead weekly dataset is used, i.e. forecast only one point ahead. To move to classification problem, first, the target needs to be engineered. Figure below shows original weekly price data (in USD), smoothed price and two targets: uptrend/not uptrend (green line) and downtrend/not downtrend (red). Target lines were constructed by first smoothing the original data, then finding extremums, next, using extremum locations, uptrend (downtrend) is asigned to a region around minimum (maximum), to be exact for the 25 % of the interval between minimum (maximum) and neighbouring maximum (maximum). Note that it leads to asymmetric interval with respect to the extremum. 
+
+![](https://github.com/evgeniya1/Flatiron_final_project/blob/master/figs/generate_target.png)
+
+To predict overall trend two classification problems are considered: uptrend/not uptrend, downtrend/not downtrend.
+
+### LSTM: predict uptrend/not uptrend
+
+Using engineered target together with smoothed, log-transformed and leveled price data and predicted target probabilities from other model (model not presented here, data are given in *buy_target.csv* and *sell_target.csv* files in *datahub* folder), 2 LSTM models are trained to forecast trend one week ahead.
+
+#### Hyperparameter Tuning
+- input window size: 80 weeks for uptrend, 10 weeks for downtrend
+- hidden layer size: optimal values is 4
+- patience for early stopping: 30
+
+Results for receiver operating (ROC) characteristic curve as well as matrices of recall and precision for model with maximal F1-score are shown below for uptrend classification. Here train-test split is 80% - 20%.
+
+![](https://github.com/evgeniya1/Flatiron_final_project/blob/master/figs/roc_auc_up.png)
+![](https://github.com/evgeniya1/Flatiron_final_project/blob/master/figs/cm_recall_presicion_up.png)
+
+10-fold cross-validation gives the following range for area under curve (AUC) ROC: train = 0.855 ![equation](https://latex.codecogs.com/gif.latex?$\pm$) 0.051, test = 0.832 ![equation](https://latex.codecogs.com/gif.latex?$\pm$) 0.084. Model slightly overfits the train set, however variation in score suggest rather stable model.
+
+### LSTM: predict downtrend/not downtrend
+
+Results for identical problem setup but for downtrend classification are shown below.
+
+![](https://github.com/evgeniya1/Flatiron_final_project/blob/master/figs/roc_auc_down.png)
+![](https://github.com/evgeniya1/Flatiron_final_project/blob/master/figs/cm_recall_presicion_down.png)
+
+For downdtrend 10-fold cross-validation gives the following range for ROC AUC: train = 0.825 ![equation](https://latex.codecogs.com/gif.latex?$\pm$) 0.039, test = 0.825 ![equation](https://latex.codecogs.com/gif.latex?$\pm$) 0.084. Scores are identical for train and test meaning that there is no overfitting. Overall variation in score suggest rather stable model.
+
+### LSTM: combine two models
+
+Confusion matrix normalized by total number of points (241) for the test data for combined models is presented below.
+
+![](https://github.com/evgeniya1/Flatiron_final_project/blob/master/figs/cm.png)
+
+Comparison between engineered target and predicted trends for test data is given below.
+
+![](https://github.com/evgeniya1/Flatiron_final_project/blob/master/figs/trend_predictions.png)
+
+Predicted values have wider signal regions but overall model captures most of the uptrend and downtrend signals. 
+
+To justify the algorithm, it is tested for the value of the holdings over time achieved using buy/sell strategy from model predictions. We start with balance of 1 and executing buy/sell order when uptrend/downtrend signal initially appears. 
+
+![](https://github.com/evgeniya1/Flatiron_final_project/blob/master/figs/assessment.png)
+
+Comparing the results, target arrives at 2.5 times while predicted values yield about 1.5 times the initial balance over 5 years. Even simplest strategy to buy/sell the entire holding balance yields positive gains.
