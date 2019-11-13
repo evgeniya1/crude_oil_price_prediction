@@ -123,8 +123,19 @@ Comparison between engineered target and predicted trends for test data is given
 
 Predicted values have wider signal regions but overall model captures most of the uptrend and downtrend signals. 
 
-To justify the algorithm, it is tested for the value of the holdings over time achieved using buy/sell strategy from model predictions. We start with balance of 1 and executing buy/sell order when uptrend/downtrend signal initially appears. 
+To justify the algorithm, it is tested for the value of the holdings over time achieved using buy/sell strategy from model predictions. We start with balance of 1 and execute buy/sell order when uptrend/downtrend signal initially appears. 
 
 ![](https://github.com/evgeniya1/Flatiron_final_project/blob/master/figs/assessment.png)
 
 Comparing the results, target arrives at 2.5 times while predicted values yield about 1.5 times the initial balance over 5 years. Even simplest strategy to buy/sell the entire holding balance yields positive gains.
+
+## Conclusions
+
+1. Regression problem: predict price 1 month ahead.
+   Facebook Prophet and ARIMA models are compared. According to the computed error, ARIMA is a better choice for crude oil price prediction problem.
+    
+2. Regression problem: predict price 1 week ahead.
+  LSTM NN model is used to forecast price 5 days ahead. 5 LSTM models predicting each day separatly performs better than 1 LSTM model that forecast 5 days ahead at once.
+
+3. Classification problem: predict trend 1 week ahead.
+   Most reliable approach to identify upcoming trends with 0.82 and 0.83 ROC AUC scores for LSTM models predicting uptrend/not uptrend and downtrend/not downtrend, respectively.
