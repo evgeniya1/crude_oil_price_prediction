@@ -6,7 +6,7 @@ Crude oil is one of the most important and most traded commodity worldwide which
 
 Forecasting the crude oil price is an extremely difficult task. Good discussion about factors influencing the price can be found here https://www.investopedia.com/articles/economics/08/determining-oil-prices.asp. An interesting fact from this article is that the majority of trades are done by speculators. Moving to data modeling, whether past price movements can be used to forecast the price or not is a subject of a debate. Here I consider solely the previous price movements to make predictions for future behavior.
 
-Here I will perform time series analysis using different available models, including facebook prophet, ARIMA, LSTM NN, aimed to forecast future prices. Last part of the project is devoted to simpler classification problem to identify the one week ahead trend, i.e. strong uptrend, not strong uptrend or downtrend (further refered as sideways) or strong downtrend.
+Here I will perform analysis using the most popular models in time series analysis, including facebook prophet, ARIMA, LSTM NN, aimed to forecast future prices. Last part of the project is devoted to simpler classification problem to identify the one week ahead trend, i.e. strong uptrend, not strong uptrend or downtrend (further refered as sideways) or strong downtrend.
 
 ## Dataset
 
@@ -48,19 +48,13 @@ Comparing *prophet* and ARIMA results, ARIMA gives noticeably better predictions
 
 ## Regression problem: forecast one week ahead
 
-### ARIMA
-
-Moving to the simpler problem: predicting 5 days ahead (i.e. 1 week ahead instead of 1 month), plot below shows comparison between the actual price (black line) and predicted by ARIMA model (red line) for 100 CV intervals.
-
-![](https://github.com/evgeniya1/Flatiron_final_project/blob/master/CV_arima/y_smooth_w8_train_506_test_5_cv_100/compare.png)
-
 ### LSTM
 
 Long short-term memory (LSTM) is a special type of artificial recurrent neural network (RNN). In simple workds, RNN is a network with loop: it can be represented by multiple copies of the same network (e.g. applied to sliced chunks of a given time series) where information is passed from each one NN to the next one in a sequence. In case of LSTM NN, the passed information goes through compicated system of filters. See this post for detailed description: https://colah.github.io/posts/2015-08-Understanding-LSTMs/.  
 
 Here I will focus on the simpler problem: predict 5 days ahead. I explore two different approaches, shown schematically below: 
 - 1 LSTM model to predict all 5 days ahead
-- 5 different LSTM models to predict one day ahead for each day out of 5 (model stacking)
+- 5 different LSTM models to predict only one day (1st, 2nd, 3rf, 4th, 5th) so that the combined results similarly gives 5 days ahead forecast (called model stacking)
 
 <img src="https://github.com/evgeniya1/Flatiron_final_project/blob/master/figs/LSTM_models.png" width="337" height="284">
 
@@ -68,15 +62,15 @@ Here I will focus on the simpler problem: predict 5 days ahead. I explore two di
 - input window size: optimal value is 25 days for 1 LSTM, [29,20,17,18,14] days for 5 LSTM models, respectively. Note that in case of 5 LSTM models input size decreases with the gap increase between last available input data point and target point, i.e. less short-term information is needed for larger gaps, which is an interesting finding.
 - hidden layer size: optimal values is 2
 
-Comparison between actual price (black dots) and predicted (red lines) for 5 days ahead using optimal input window size to train the models is shown below for both 1 LSTM and 5 LSTM models for 50 intervals. 1 LSTM model has MAPE = 1.98 ![equation](https://latex.codecogs.com/gif.latex?$\pm$) 1.95 while 5 LSTM models has slightly better result MAPE = 1.91 ![equation](https://latex.codecogs.com/gif.latex?$\pm$) 1.91 for the test data. Here train-test split is 80%-20%. As expected 5 LSTM models give better results.
+Comparison between actual price (black dots) and predicted (red lines) for 5 days ahead using optimal input window size to train the models is shown below for both 1 LSTM and 5 LSTM models for 50 intervals. 1 LSTM model has MAPE = 1.98 ![equation](https://latex.codecogs.com/gif.latex?$\pm$) 1.95 while 5 LSTM models has slightly better result MAPE = 1.91 ![equation](https://latex.codecogs.com/gif.latex?$\pm$) 1.91 for the test data. Here train-test split is 80%-20%. As expected 5 LSTM models give better results in terms of MAPE.
 
 ![](https://github.com/evgeniya1/Flatiron_final_project/blob/master/figs/regression_5vs1.png)
-From the figure above, it can be noticed that 1 LSTM model gives flatter predictions than 5 LSMTs that campture better the variation in predicted price for 5 days. To demonstrate this, graphs below show the distribution of average slope (within predicted 5 days) for both models. 1 LSTM model clearly captures the variation in slope better.
+From the figure above, it can be noticed that 1 LSTM model gives flatter predictions than 5 LSMTs that campture better the variation in predicted price for 5 days. To demonstrate this, graphs below show the distribution of average slope (within predicted 5 days) for both models.
 
 ![](https://github.com/evgeniya1/Flatiron_final_project/blob/master/figs/regression_slope_hist_1LSTM.png)
 ![](https://github.com/evgeniya1/Flatiron_final_project/blob/master/figs/regression_slope_hist.png)
 
-These LSTM models give reasonable predictions, accounting for the noisiness and randomness of a given problem. However, is it possible to achieve more reliable results? To do so, let me consider even simplier classification problem aimed to predict strong uptrend, sideways, or strong downtrend.
+These LSTM models give reasonable predictions, accounting for the noisiness and randomness of the given problem. 5 LSTM models give better results since this approach is inherently more flexible having more parameters to adjust. However, is it possible to achieve more reliable results? To do so, let me consider even simplier classification problem aimed to predict strong uptrend, sideways, or strong downtrend.
 
 ## Classification problem: forecast trend one week ahead
 
