@@ -44,8 +44,6 @@ Comparison between actual price (black line) and predicted (red line) for 22 day
 
 ![](https://github.com/evgeniya1/Flatiron_final_project/blob/master/CV_arima/y_smooth_w8_train_506_test_22_cv_100/compare.png)
 
-
-
 ### Comparison between prophet and ARIMA
 
 Comparing *prophet* and ARIMA results, ARIMA gives noticeably better predictions with MAPE roughly three times lower that *prophet*, as can be seen from the table shown below.
@@ -57,7 +55,7 @@ Comparing *prophet* and ARIMA results, ARIMA gives noticeably better predictions
 
 Plot below combines the previous predictions for 22 days using 2 years to train the model for both prophet and ARIMA for comparison.
 
-![](https://github.com/evgeniya1/Flatiron_final_project/blob/master/figs/compare_prop_arima.png)
+![](https://github.com/evgeniya1/Flatiron_final_project/blob/master/figs/compare_fb_arima.png)
 
 ## Regression problem: forecast one week ahead
 
