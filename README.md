@@ -38,7 +38,7 @@ Next, I use Auto Regressive Integrated Moving Average (ARIMA) model from statsmo
 
 Similarly, I performed slide-forward CV using 2 years of data to train the ARIMA model with found optimal parameters *p*=4, *d*=1, *q*=1. The animation below shows 100 CV intervals, where each interval is trained separately and error is computed on 22 days of test unseen by the model data. MAPE for the test data is 12.51 % ![equation](https://latex.codecogs.com/gif.latex?$\pm$) 16.80 % for the transformed price (68 % confidence interval as well). While for the transformed back to USD units price MAPE is 4.44 % ![equation](https://latex.codecogs.com/gif.latex?$\pm$) 2.93 %. 
 
-![](https://github.com/evgeniya1/Flatiron_final_project/blob/master/CV_fbprophet/y_smooth_w8_train_506_test_22_cv_100/FBprop_smooth_cv100_train_506_test_22.gif)
+![](https://github.com/evgeniya1/Flatiron_final_project/blob/master/CV_arima/y_smooth_w8_train_506_test_22_cv_100/ARIMA_smooth_cv100_train_506_test_22.gif)
 
 Comparison between actual price (black line) and predicted (red line) for 22 days ahead using 2 years of past data to train the model is shown below.
 
