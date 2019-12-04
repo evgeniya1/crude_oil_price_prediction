@@ -73,7 +73,7 @@ Here I will focus on the simpler problem: predict 5 days ahead. I explore two di
 - input window size: optimal value is 25 days for 1 LSTM, [29,20,17,18,14] days for 5 LSTM models, respectively. Note that in case of 5 LSTM models input size decreases with the gap increase between last available input data point and target point, i.e. less short-term information is needed for larger gaps, which is an interesting finding.
 - hidden layer size: optimal values is 2
 
-Comparison between actual price (black dots) and predicted (red lines) for 5 days ahead using optimal input window size to train the models is shown below for both 1 LSTM and 5 LSTM models for 50 intervals. 1 LSTM model has MAPE = 1.98 ![equation](https://latex.codecogs.com/gif.latex?$\pm$) 1.32 while 5 LSTM models has slightly better result MAPE = 1.91 ![equation](https://latex.codecogs.com/gif.latex?$\pm$) 1.29 for the test data. Here train-test split is 80%-20%. As expected 5 LSTM models give better results in terms of MAPE.
+Comparison between actual price (black dots) and predicted (red lines) for 5 days ahead using optimal input window size to train the models is shown below for both 1 LSTM and 5 LSTM models for 50 intervals. 1 LSTM model has MAPE = 1.98 ![equation](https://latex.codecogs.com/gif.latex?$\pm$) 1.31 while 5 LSTM models has slightly better result MAPE = 1.91 ![equation](https://latex.codecogs.com/gif.latex?$\pm$) 1.28 for the test data. Here train-test split is 80%-20%. As expected 5 LSTM models give better results in terms of MAPE.
 
 ![](https://github.com/evgeniya1/Flatiron_final_project/blob/master/figs/regression_5vs1.png)
 From the figure above, it can be noticed that 1 LSTM model gives flatter predictions than 5 LSMTs that campture better the variation in predicted price for 5 days. To demonstrate this, graphs below show the distribution of average slope (within predicted 5 days) for both models.
@@ -91,8 +91,8 @@ MAPE for the 5 day forecast for all models is shown below.
 | ------------- | ------------- |
 | prophet  | 4.03 % ![equation](https://latex.codecogs.com/gif.latex?$\pm$) 2.88 %  |
 | ARIMA  | 1.44 % ![equation](https://latex.codecogs.com/gif.latex?$\pm$) 0.7 % |
-| 1 LSTM  | 1.98 % ![equation](https://latex.codecogs.com/gif.latex?$\pm$) 1.32 %  |
-| 5 LSTMs  | 1.91 % ![equation](https://latex.codecogs.com/gif.latex?$\pm$) 1.29 % |
+| 1 LSTM  | 1.98 % ![equation](https://latex.codecogs.com/gif.latex?$\pm$) 1.31 %  |
+| 5 LSTMs  | 1.91 % ![equation](https://latex.codecogs.com/gif.latex?$\pm$) 1.28 % |
 
 ## Classification problem: forecast trend one week ahead
 
