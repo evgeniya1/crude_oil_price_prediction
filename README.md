@@ -91,8 +91,8 @@ MAPE for the 5 day forecast for all models is shown below.
 | ------------- | ------------- |
 | prophet  | 4.03 % ![equation](https://latex.codecogs.com/gif.latex?$\pm$) 2.88 %  |
 | ARIMA  | 1.44 % ![equation](https://latex.codecogs.com/gif.latex?$\pm$) 0.7 % |
-| 1 LSTM  | 1.98 % ![equation](https://latex.codecogs.com/gif.latex?$\pm$) 1.96 %  |
-| 5 LSTMs  | 1.91 % ![equation](https://latex.codecogs.com/gif.latex?$\pm$) 1.91 % |
+| 1 LSTM  | 1.98 % ![equation](https://latex.codecogs.com/gif.latex?$\pm$) 1.32 %  |
+| 5 LSTMs  | 1.91 % ![equation](https://latex.codecogs.com/gif.latex?$\pm$) 1.29 % |
 
 ## Classification problem: forecast trend one week ahead
 
