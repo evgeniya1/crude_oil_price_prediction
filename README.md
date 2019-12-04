@@ -154,4 +154,4 @@ Comparing the results, target arrives at 2.5 times while predicted values yield 
   LSTM NN model is used to forecast price 5 days ahead. 5 LSTM models predicting each day separatly performs better than 1 LSTM model that forecast 5 days ahead at once.
 
 3. Classification problem: predict trend 1 week ahead.
-   Most reliable approach to identify upcoming trends with 0.82 and 0.83 ROC AUC scores for LSTM models predicting uptrend/not uptrend and downtrend/not downtrend, respectively.
+   Most reliable approach to identify upcoming trends with 0.83 ROC AUC scores (according to 10-fold CV) for both LSTM models predicting uptrend/not uptrend and downtrend/not downtrend.
