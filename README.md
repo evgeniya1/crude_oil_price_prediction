@@ -83,6 +83,17 @@ From the figure above, it can be noticed that 1 LSTM model gives flatter predict
 
 These LSTM models give reasonable predictions, accounting for the noisiness and randomness of the given problem. 5 LSTM models give better results since this approach is inherently more flexible having more parameters to adjust. However, is it possible to achieve more reliable results? To do so, let me consider even simplier classification problem aimed to predict strong uptrend, sideways, or strong downtrend.
 
+### Compare Prophet, ARIMA and LSTM results for 5 day forecast
+
+MAPE for the 5 day forecast for all models is shown below.
+
+| Model  | MAPE |
+| ------------- | ------------- |
+| prophet  | 4.03 % ![equation](https://latex.codecogs.com/gif.latex?$\pm$) 2.88 %  |
+| ARIMA  | 1.44 % ![equation](https://latex.codecogs.com/gif.latex?$\pm$) 0.7 % |
+| 1 LSTM  | 1.98 % ![equation](https://latex.codecogs.com/gif.latex?$\pm$) 1.96 %  |
+| 5 LSTMs  | 1.91 % ![equation](https://latex.codecogs.com/gif.latex?$\pm$) 1.91 % |
+
 ## Classification problem: forecast trend one week ahead
 
 Here to predict price one week ahead weekly dataset is used, i.e. forecast only one point ahead. To move to classification problem, first, the target needs to be engineered. Figure below shows original weekly price data (in USD), smoothed price and two targets: uptrend/not uptrend (green line) and downtrend/not downtrend (red). Target lines were constructed by first smoothing the original data, then finding extremums, next, using extremum locations, uptrend (downtrend) is asigned to a region around minimum (maximum), to be exact for the 25 % of the interval between minimum (maximum) and neighbouring maximum (maximum). Note that it leads to asymmetric interval with respect to the extremum. 
